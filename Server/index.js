@@ -24,10 +24,42 @@ async function run() {
 
     // Register User (with default 50 coins)
     app.put("/registerUser", async (req, res) => {
-      const user = req.body;
-      user.coins = 50;
-      const result = await UsersCollection.insertOne(user);
-      res.send(result);
+      try {
+        const user = req.body;
+        user.coins = 50;
+
+        const existingUser = await UsersCollection.findOne({
+          email: user.email,
+        });
+
+        if (!existingUser) {
+          const result = await UsersCollection.insertOne(user);
+          res.send(result);
+        }
+      } catch (error) {
+        console.error("Error registering user:", error);
+        res.status(500).send({ error: "Failed to register user" });
+      }
+    });
+
+    // Get User Data by Email
+    app.get("/user", async (req, res) => {
+      try {
+        const email = req.query.email;
+        if (!email) {
+          return res.status(400).send({ error: "Email is required" });
+        }
+
+        const user = await UsersCollection.findOne({ email: email });
+        if (!user) {
+          return res.status(404).send({ error: "User not found" });
+        }
+
+        res.send(user);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        res.status(500).send({ error: "Failed to fetch user data" });
+      }
     });
 
     // Add Recipe
