@@ -6,15 +6,15 @@ const Hero = () => {
       <picture className="w-full ">
         <source
           media="(max-width: 500px)"
-          srcSet="../../../public/43.png"
+          srcSet="/43.png"
           className="w-full"
         />
         <source
           media="(max-width: 800px)"
-          srcSet="../../../public/84.png"
+          srcSet="/84.png"
           className="w-full"
         />
-        <img src="../../../public/1600x400.png" className="w-full" />
+        <img src="/1600x400.png" className="w-full" />
       </picture>
       <Link
         to={"/recipes"}

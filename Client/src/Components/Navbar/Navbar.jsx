@@ -32,7 +32,7 @@ function Navbar() {
     <div className="max-w-7xl mx-auto flex justify-between items-center w-full">
       <Link to={"/"}>
         <img
-          src="../../../public/logo.png"
+          src="/logo.png"
           alt=""
           className="size-24 hover:scale-110 transition-all ease-in-out duration-700"
         />
@@ -46,7 +46,7 @@ function Navbar() {
         </Link>
         <Link
           className="hover:underline hover:scale-110 transition-all ease-in-out duration-700"
-          to={"/addRecipes"}
+          to={"/addRecipe"}
         >
           Add Recipe
         </Link>

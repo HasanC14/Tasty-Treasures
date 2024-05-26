@@ -9,7 +9,9 @@ function Recipes() {
   const fetchRecipes = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/recipes`);
+      const res = await axios.get(
+        `https://tastytresures-hasanc14s-projects.vercel.app/recipes`
+      );
       console.log(res.data);
       setRecipes(res.data);
     } catch (error) {
@@ -26,7 +28,7 @@ function Recipes() {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <div className="text-center">Loading...</div>
       ) : (
         <div className="grid grid-cols-4 max-w-6xl mx-auto gap-4">
           {recipes.map((recipe, index) => (

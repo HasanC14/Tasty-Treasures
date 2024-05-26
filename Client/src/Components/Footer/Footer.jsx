@@ -8,7 +8,7 @@ function Footer() {
               <li className="">
                 <a href="/">
                   <img
-                    src="../../../public/logo_text.png"
+                    src="/logo_text.png"
                     alt=""
                     className="size-40 hover:scale-110 transition-all ease-in-out duration-700  overflow-hidden"
                   />

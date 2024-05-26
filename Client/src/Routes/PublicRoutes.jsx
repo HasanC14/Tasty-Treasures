@@ -6,6 +6,7 @@ import RecipeDetails from "../Components/Recipes/RecipeDetails";
 import Login from "../Components/Login/Login";
 import AddRecipe from "../Components/Recipes/AddRecipe";
 import BuyCoins from "../Components/Buy Coins/BuyCoins";
+import Error from "../Components/Error/Error";
 
 export const router = createBrowserRouter([
   {
@@ -22,7 +23,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/addRecipe",
-        element: <AddRecipe></AddRecipe>,
+        element: <AddRecipe />,
       },
       {
         path: "/recipeDetails/:id",
@@ -38,7 +39,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "*",
-        element: <Error></Error>,
+        element: <Error />,
       },
     ],
   },

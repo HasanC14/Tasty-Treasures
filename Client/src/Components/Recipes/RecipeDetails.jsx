@@ -17,9 +17,12 @@ function RecipeDetails() {
   const fetchRecipe = async (userEmail) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/recipe/${id}`, {
-        params: { userEmail },
-      });
+      const res = await axios.get(
+        `https://tastytresures-hasanc14s-projects.vercel.app/recipe/${id}`,
+        {
+          params: { userEmail },
+        }
+      );
       setCoin((prev) => !prev);
       console.log(res.data.recipe);
       setRecipe(res.data.recipe);
@@ -35,10 +38,10 @@ function RecipeDetails() {
     if (savedUser?.email) {
       fetchRecipe(savedUser.email);
     }
-  }, [savedUser]);
+  }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center">Loading...</div>;
   }
 
   if (!recipe) {
