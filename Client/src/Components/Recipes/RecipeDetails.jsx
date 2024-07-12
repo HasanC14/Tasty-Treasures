@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UseAuth } from "../../Context/AuthContext";
 import {
   FaBasketShopping,
@@ -13,16 +13,14 @@ function RecipeDetails() {
   const { savedUser, setCoin } = UseAuth();
   const [loading, setLoading] = useState(false);
   const [recipe, setRecipe] = useState(null);
+  const navigate = useNavigate();
 
   const fetchRecipe = async (userEmail) => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        `https://tastytresures-hasanc14s-projects.vercel.app/recipe/${id}`,
-        {
-          params: { userEmail },
-        }
-      );
+      const res = await axios.get(`http://localhost:5000/recipe/${id}`, {
+        params: { userEmail },
+      });
       setCoin((prev) => !prev);
       console.log(res.data.recipe);
       setRecipe(res.data.recipe);
@@ -45,7 +43,8 @@ function RecipeDetails() {
   }
 
   if (!recipe) {
-    return <div>No recipe found</div>;
+    navigate("/buyCoin");
+    return null;
   }
 
   return (

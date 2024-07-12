@@ -65,6 +65,7 @@ async function run() {
     // Add Recipe
     app.post("/addRecipe", async (req, res) => {
       const recipe = req.body;
+      console.log(recipe);
       recipe.watchCount = 0;
       recipe.purchased_by = [];
       recipe.reactions = [];
@@ -163,23 +164,34 @@ async function run() {
 
     // Recipes
     app.get("/recipes", async (req, res) => {
-      const { category, country, page = 1, pageSize = 5 } = req.query;
+      const { category, country, page, pageSize } = req.query;
       const search = req.query.search || "";
-      const query = {
-        $or: [
-          {},
-          { category: category },
-          { country: country },
-          { title: { $regex: search, $options: "i" } },
-        ],
-      };
 
-      const skip = (page - 1) * pageSize;
+      const query = {};
 
-      const recipes = await RecipesCollection.find(query)
-        .skip(skip)
-        .limit(parseInt(pageSize))
-        .toArray();
+      if (category) {
+        query.category = category;
+      }
+
+      if (country) {
+        query.country = country;
+      }
+
+      if (search) {
+        query.title = { $regex: search, $options: "i" };
+      }
+
+      let recipes;
+
+      if (page && pageSize) {
+        const skip = (page - 1) * pageSize;
+        recipes = await RecipesCollection.find(query)
+          .skip(skip)
+          .limit(parseInt(pageSize))
+          .toArray();
+      } else {
+        recipes = await RecipesCollection.find(query).toArray();
+      }
 
       res.send(recipes);
     });

@@ -41,9 +41,11 @@ const AddRecipe = () => {
       creatorEmail: savedUser.email,
     };
 
+    console.log(formattedRecipe);
+
     try {
       const response = await axios.post(
-        "https://tastytresures-hasanc14s-projects.vercel.app/addRecipe",
+        "http://localhost:5000/addRecipe",
         formattedRecipe
       );
       toast.success("Recipe added successfully!");

@@ -41,14 +41,9 @@ export const AuthProvider = ({ children }) => {
       profileImage: currentUser?.photoURL,
     };
     if (currentUser) {
-      axios
-        .put(
-          "https://tastytresures-hasanc14s-projects.vercel.app/registerUser",
-          user
-        )
-        .then((res) => {
-          setSavedUser(res.data);
-        });
+      axios.put("http://localhost:5000/registerUser", user).then((res) => {
+        setSavedUser(res.data);
+      });
     }
   };
 
@@ -57,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     if (currentUser) {
       try {
         const res = await axios.get(
-          `https://tastytresures-hasanc14s-projects.vercel.app/user?email=${currentUser?.email}`
+          `http://localhost:5000/user?email=${currentUser?.email}`
         );
         setSavedUser(res.data);
       } catch (error) {
