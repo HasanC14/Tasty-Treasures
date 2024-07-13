@@ -5,6 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const multer = require("multer");
 
 app.use(cors());
 app.use(express.json());
@@ -16,7 +17,16 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "recipeImages/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
 
+const upload = multer({ storage });
 async function run() {
   try {
     const UsersCollection = client.db("TastyTreasures").collection("Users");
@@ -63,14 +73,48 @@ async function run() {
     });
 
     // Add Recipe
-    app.post("/addRecipe", async (req, res) => {
-      const recipe = req.body;
-      console.log(recipe);
-      recipe.watchCount = 0;
-      recipe.purchased_by = [];
-      recipe.reactions = [];
-      const result = await RecipesCollection.insertOne(recipe);
-      res.send(result);
+    app.post("/addRecipe", upload.single("image"), async (req, res) => {
+      console.log(req.body);
+      try {
+        const {
+          title,
+          description,
+          ingredients,
+          steps,
+          category,
+          country,
+          videoURL,
+          tags,
+          creatorEmail,
+        } = req.body;
+
+        let imageURL = "";
+        if (req.file) {
+          imageURL = `/recipeImages/${req.file.filename}`;
+        }
+
+        const formattedRecipe = {
+          title,
+          description,
+          ingredients: ingredients.split(",").map((item) => item.trim()),
+          steps: steps.split("\n").map((item) => item.trim()),
+          category,
+          country,
+          videoURL,
+          imageURL,
+          tags: tags.split(",").map((item) => item.trim()),
+          creatorEmail,
+          watchCount: 0,
+          purchased_by: [],
+          reactions: [],
+        };
+
+        const result = await RecipesCollection.insertOne(formattedRecipe);
+        res.status(200).json(result);
+      } catch (error) {
+        console.error("Error adding recipe:", error);
+        res.status(500).json({ error: "Error adding recipe" });
+      }
     });
 
     // View Recipe Details
@@ -177,7 +221,7 @@ async function run() {
         query.country = country;
       }
 
-      if (search) {
+      if (search && search != "") {
         query.title = { $regex: search, $options: "i" };
       }
 

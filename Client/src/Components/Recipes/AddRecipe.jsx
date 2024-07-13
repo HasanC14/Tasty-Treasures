@@ -2,6 +2,13 @@ import { useState } from "react";
 import axios from "axios";
 import { UseAuth } from "../../Context/AuthContext";
 import { Toaster, toast } from "react-hot-toast";
+import { FilePond, registerPlugin } from "react-filepond";
+import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginFileEncode from "filepond-plugin-file-encode";
+
+registerPlugin(FilePondPluginImagePreview, FilePondPluginFileEncode);
 
 const AddRecipe = () => {
   const { savedUser } = UseAuth();
@@ -13,12 +20,13 @@ const AddRecipe = () => {
     category: "",
     country: "",
     videoURL: "",
-    imageURL: "",
     tags: "",
   });
+  const [imageFile, setImageFile] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setRecipe((prevRecipe) => ({
       ...prevRecipe,
       [name]: value,
@@ -33,20 +41,35 @@ const AddRecipe = () => {
       return;
     }
 
-    const formattedRecipe = {
-      ...recipe,
-      ingredients: recipe.ingredients.split(",").map((item) => item.trim()),
-      steps: recipe.steps.split("\n").map((item) => item.trim()),
-      tags: recipe.tags.split(",").map((item) => item.trim()),
-      creatorEmail: savedUser.email,
-    };
+    const formData = new FormData();
+    console.log(formData);
+    console.log(recipe?.title);
+    formData.append("title", recipe?.title);
+    console.log(formData);
+    formData.append("description", recipe?.description);
+    formData.append("ingredients", recipe?.ingredients);
+    formData.append("steps", recipe?.steps);
+    formData.append("category", recipe?.category);
+    formData.append("country", recipe?.country);
+    formData.append("videoURL", recipe?.videoURL);
+    formData.append("tags", recipe?.tags);
+    formData.append("creatorEmail", savedUser.email);
 
-    console.log(formattedRecipe);
-
+    if (imageFile.length > 0) {
+      formData.append("image", imageFile[0]?.file);
+    }
     try {
+      for (var key of formData.entries()) {
+        console.log(key[0] + ", " + key[1]);
+      }
       const response = await axios.post(
         "http://localhost:5000/addRecipe",
-        formattedRecipe
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       toast.success("Recipe added successfully!");
       console.log("Recipe added successfully:", response.data);
@@ -58,9 +81,9 @@ const AddRecipe = () => {
         category: "",
         country: "",
         videoURL: "",
-        imageURL: "",
         tags: "",
       });
+      setImageFile([]);
     } catch (error) {
       console.error("Error adding recipe:", error);
     }
@@ -146,13 +169,15 @@ const AddRecipe = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-700">Image URL:</label>
-          <input
-            type="url"
-            name="imageURL"
-            value={recipe?.imageURL}
-            onChange={handleChange}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+          <label className="block text-gray-700">Image:</label>
+          <FilePond
+            files={imageFile}
+            allowMultiple={false}
+            onupdatefiles={setImageFile}
+            allowFileEncode={true}
+            name="image"
+            maxFileSize="2MB"
+            labelIdle='Drag & Drop your image or <span class="filepond--label-action">Browse</span>'
           />
         </div>
         <div>

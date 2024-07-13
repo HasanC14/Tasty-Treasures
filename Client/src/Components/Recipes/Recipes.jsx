@@ -5,7 +5,7 @@ import RecipeCard from "./RecipeCard";
 function Recipes() {
   const [loading, setLoading] = useState(false);
   const [recipes, setRecipes] = useState([]);
-  const [search, setSearch] = useState(" ");
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(4);
 
