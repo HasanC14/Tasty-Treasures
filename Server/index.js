@@ -2,14 +2,25 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require("cors");
-require("dotenv").config();
-
+const cloudinary = require("cloudinary").v2;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const multer = require("multer");
+const path = require("path");
+require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static("uploads"));
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "uploads"));
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage });
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@back-prac-2-admin.sldkkq5.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
@@ -17,16 +28,13 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "recipeImages/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
 
-const upload = multer({ storage });
+// cloudinary.config({
+//   cloud_name: "dil9yow5q",
+//   api_key: "436545465192729",
+//   api_secret: "mScRPzk-NDdKYdhUdUlXOd_g6KY",
+// });
+
 async function run() {
   try {
     const UsersCollection = client.db("TastyTreasures").collection("Users");
@@ -74,46 +82,58 @@ async function run() {
 
     // Add Recipe
     app.post("/addRecipe", upload.single("image"), async (req, res) => {
-      console.log(req.body);
       try {
-        const {
-          title,
-          description,
-          ingredients,
-          steps,
-          category,
-          country,
-          videoURL,
-          tags,
-          creatorEmail,
-        } = req.body;
-
-        let imageURL = "";
         if (req.file) {
-          imageURL = `/recipeImages/${req.file.filename}`;
+          console.log("File uploaded successfully:", req.file);
+          const {
+            title,
+            description,
+            ingredients,
+            steps,
+            category,
+            country,
+            videoURL,
+            tags,
+            creatorEmail,
+          } = req.body;
+          // let imageURL = "";
+          // cloudinary.uploader.upload(req?.file?.path, async (error, result) => {
+          //   if (error) {
+          //     console.error("Error uploading to Cloudinary:", error);
+          //     return res
+          //       .status(500)
+          //       .json({ error: "Error uploading to Cloudinary" });
+          //   }
+          //   imageURL = result.secure_url;
+          // });
+
+          const imageURL = `/uploads/${req.file.originalname}`;
+
+          const formattedRecipe = {
+            title,
+            description,
+            ingredients: ingredients.split(",").map((item) => item.trim()),
+            steps: steps.split("\n").map((item) => item.trim()),
+            category,
+            country,
+            videoURL,
+            imageURL,
+            tags: tags.split(",").map((item) => item.trim()),
+            creatorEmail,
+            watchCount: 0,
+            purchased_by: [],
+            reactions: [],
+          };
+
+          const result = await RecipesCollection.insertOne(formattedRecipe);
+          res.status(200).json(result);
+        } else {
+          console.log("No file uploaded");
+          res.status(400).json({ error: "No file uploaded" });
         }
-
-        const formattedRecipe = {
-          title,
-          description,
-          ingredients: ingredients.split(",").map((item) => item.trim()),
-          steps: steps.split("\n").map((item) => item.trim()),
-          category,
-          country,
-          videoURL,
-          imageURL,
-          tags: tags.split(",").map((item) => item.trim()),
-          creatorEmail,
-          watchCount: 0,
-          purchased_by: [],
-          reactions: [],
-        };
-
-        const result = await RecipesCollection.insertOne(formattedRecipe);
-        res.status(200).json(result);
       } catch (error) {
-        console.error("Error adding recipe:", error);
-        res.status(500).json({ error: "Error adding recipe" });
+        console.error("Error uploading file:", error);
+        res.status(500).json({ error: "Error uploading file" });
       }
     });
 

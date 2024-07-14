@@ -42,10 +42,7 @@ const AddRecipe = () => {
     }
 
     const formData = new FormData();
-    console.log(formData);
-    console.log(recipe?.title);
     formData.append("title", recipe?.title);
-    console.log(formData);
     formData.append("description", recipe?.description);
     formData.append("ingredients", recipe?.ingredients);
     formData.append("steps", recipe?.steps);
@@ -53,15 +50,12 @@ const AddRecipe = () => {
     formData.append("country", recipe?.country);
     formData.append("videoURL", recipe?.videoURL);
     formData.append("tags", recipe?.tags);
-    formData.append("creatorEmail", savedUser.email);
+    formData.append("creatorEmail", savedUser?.email);
 
     if (imageFile.length > 0) {
       formData.append("image", imageFile[0]?.file);
     }
     try {
-      for (var key of formData.entries()) {
-        console.log(key[0] + ", " + key[1]);
-      }
       const response = await axios.post(
         "http://localhost:5000/addRecipe",
         formData,

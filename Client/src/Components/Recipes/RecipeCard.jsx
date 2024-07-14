@@ -17,7 +17,6 @@ function RecipeCard({ Recipe }) {
     watchCount,
     purchased_by,
   } = Recipe;
-  console.log(title);
 
   useEffect(() => {
     if (savedUser?.email) {

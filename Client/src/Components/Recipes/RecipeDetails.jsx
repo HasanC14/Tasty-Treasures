@@ -51,19 +51,19 @@ function RecipeDetails() {
     <div className="max-w-6xl mx-auto space-y-4 text-lg">
       <div className="w-full flex items-center ">
         <img
-          src={recipe.imageURL}
-          alt={recipe.title}
+          src={recipe?.imageURL}
+          alt={recipe?.title}
           className=" w-1/3 rounded-md"
         />
       </div>
-      <h1 className="text-4xl font-bold">{recipe.title}</h1>
-      <p>{recipe.description}</p>
+      <h1 className="text-4xl font-bold">{recipe?.title}</h1>
+      <p>{recipe?.description}</p>
       <h2 className="flex items-center text-xl">
         <FaBasketShopping className="mr-2" />
         Ingredients
       </h2>
       <ul className="list-disc ml-4">
-        {recipe.ingredients.map((ingredient, index) => (
+        {recipe?.ingredients?.map((ingredient, index) => (
           <li key={index}>{ingredient}</li>
         ))}
       </ul>
@@ -72,7 +72,7 @@ function RecipeDetails() {
         Steps
       </h2>
       <ol>
-        {recipe.steps.map((step, index) => (
+        {recipe?.steps?.map((step, index) => (
           <li key={index}>
             {index + 1}. <span className="ml-2">{step}</span>
           </li>
@@ -88,7 +88,7 @@ function RecipeDetails() {
         src={`https://www.youtube.com/embed/${
           recipe?.videoURL.split("be/")[1]
         }`}
-        title={recipe.title}
+        title={recipe?.title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       ></iframe>
