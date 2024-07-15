@@ -51,7 +51,7 @@ function RecipeDetails() {
     <div className="max-w-6xl mx-auto space-y-4 text-lg">
       <div className="w-full flex items-center ">
         <img
-          src={recipe?.imageURL}
+          src={`http://localhost:5000${recipe?.imageURL}`}
           alt={recipe?.title}
           className=" w-1/3 rounded-md"
         />

@@ -1,20 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import RecipeCard from "./RecipeCard";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import "./Recipes.css";
+import { FallingLines } from "react-loader-spinner";
 
 function Recipes() {
   const [loading, setLoading] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(4);
+  const [animationClass, setAnimationClass] = useState("slide-in");
 
   const fetchRecipes = async () => {
     setLoading(true);
     try {
-      console.log(search);
       const res = await axios.get(
-        `http://localhost:5000/recipes?search=${search}&page=${page}&pageSize=${pageSize}`
+        `http://localhost:5000/recipes?search=${search}&page=${page}`
       );
       setRecipes(res.data);
     } catch (error) {
@@ -26,41 +28,92 @@ function Recipes() {
 
   useEffect(() => {
     fetchRecipes();
-  }, [search, page, pageSize]);
+  }, [search, page]);
+
+  const handlePageChange = (newPage) => {
+    setAnimationClass("slide-out");
+    setTimeout(() => {
+      setPage(newPage);
+      setAnimationClass("slide-in");
+    }, 500);
+  };
 
   return (
     <>
-      <div className="search-bar">
+      <form className=" max-w-6xl mx-auto">
+        <label
+          htmlFor="search"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+        >
+          Search
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg
+              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="search"
+            id="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search recipes"
+            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
+          />
+        </div>
+      </form>
+      {/* 
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search recipes"
           className="search-input bg-gray-500"
-        />
-      </div>
+        /> */}
       {loading ? (
-        <div className="text-center">Loading...</div>
+        <div className="flex justify-center items-center h-[28rem]">
+          <FallingLines
+            color="#EF4444"
+            width="50"
+            visible={true}
+            ariaLabel="falling-circles-loading"
+          />
+        </div>
       ) : (
-        <div>
-          <div className="grid grid-cols-4 max-w-6xl mx-auto gap-4">
+        <div className="max-w-6xl mx-auto my-10">
+          <div className={`grid grid-cols-4 gap-4 h-[28rem] ${animationClass}`}>
             {recipes.map((recipe, index) => (
               <RecipeCard key={index} Recipe={recipe} />
             ))}
           </div>
-          <div className="flex justify-center">
-            <button onClick={() => setPage(page - 1)} disabled={page === 1}>
-              Previous Page
-            </button>
-            <button onClick={() => setPage(page + 1)}>Next Page</button>
-            <select
-              value={pageSize}
-              onChange={(e) => setPageSize(parseInt(e.target.value))}
+          <div className="flex justify-end items-center space-x-4">
+            <button
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 1}
+              className="bg-gray-200 rounded-full p-3 text-red-500"
             >
-              <option value={4}>4</option>
-              <option value={8}>8</option>
-              <option value={12}>12</option>
-            </select>
+              <FaArrowLeft />
+            </button>
+            <button
+              onClick={() => handlePageChange(page + 1)}
+              className="bg-gray-200 rounded-full p-3 text-red-500"
+            >
+              <FaArrowRight />
+            </button>
           </div>
         </div>
       )}

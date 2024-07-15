@@ -17,7 +17,7 @@ function RecipeCard({ Recipe }) {
     watchCount,
     purchased_by,
   } = Recipe;
-
+  console.log(imageURL);
   useEffect(() => {
     if (savedUser?.email) {
       const hasPurchased = purchased_by.includes(savedUser.email);
@@ -32,7 +32,7 @@ function RecipeCard({ Recipe }) {
     <div className="p-4 rounded-lg bg-gray-100 h-[27rem] relative">
       <div>
         <img
-          src={imageURL}
+          src={`http://localhost:5000${imageURL}`}
           alt=""
           className="rounded-md hover:rotate-12 cursor-pointer hover:scale-110 transition-all ease-in-out duration-700"
         />
