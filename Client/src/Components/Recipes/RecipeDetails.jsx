@@ -13,6 +13,8 @@ function RecipeDetails() {
   const { savedUser, setCoin } = UseAuth();
   const [loading, setLoading] = useState(false);
   const [recipe, setRecipe] = useState(null);
+  const [purchase, setPurchase] = useState(false);
+
   const navigate = useNavigate();
 
   const fetchRecipe = async (userEmail) => {
@@ -21,9 +23,20 @@ function RecipeDetails() {
       const res = await axios.get(`http://localhost:5000/recipe/${id}`, {
         params: { userEmail },
       });
-      setCoin((prev) => !prev);
-      console.log(res.data.recipe);
-      setRecipe(res.data.recipe);
+
+      if (savedUser?.coins > 9) {
+        setCoin((prev) => !prev);
+        setRecipe(res.data.recipe);
+        const hasPurchased = res.data.recipe?.purchased_by?.includes(
+          savedUser.email
+        );
+        if (
+          !hasPurchased &&
+          savedUser?.email != res?.data?.recipe?.creatorEmail
+        ) {
+          navigate("/buyCoin");
+        }
+      }
     } catch (error) {
       console.error("Error fetching recipes:", error);
       setRecipe(null);
@@ -34,21 +47,18 @@ function RecipeDetails() {
 
   useEffect(() => {
     if (savedUser?.email) {
-      fetchRecipe(savedUser.email);
+      fetchRecipe(savedUser?.email);
     }
-  }, []);
+  }, [savedUser?.email]);
+
+  useEffect(() => {}, [recipe]);
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
   }
 
-  if (!recipe) {
-    navigate("/buyCoin");
-    return null;
-  }
-
   return (
-    <div className="max-w-6xl mx-auto space-y-4 text-lg">
+    <div className="space-y-4 text-lg">
       <div className="w-full flex items-center ">
         <img
           src={`http://localhost:5000${recipe?.imageURL}`}

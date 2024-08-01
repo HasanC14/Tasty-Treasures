@@ -2,8 +2,11 @@
 * {
   font-family: "Montserrat", sans-serif;
 }
+:root {
+  --primeColor: #ef4444;
+}
 .bg-prime {
-  background-color: #ef4444;
+  background-color: var(--primeColor);
 }
 .bg-second {
 }
@@ -11,7 +14,7 @@
   background-color: #f8f5f2;
 }
 .text-prime {
-  color: #ef4444;
+  color: var(--primeColor);
 }
 .text-second {
 }
@@ -41,7 +44,7 @@
   background: #000;
 }
 .swiper-pagination .swiper-pagination-bullet-active {
-  background: #ef4444;
+  background: var(--primeColor);
 }
 .swiper-pagination
   swiper-pagination-clickable

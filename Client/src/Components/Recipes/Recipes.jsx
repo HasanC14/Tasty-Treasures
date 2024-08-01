@@ -4,6 +4,7 @@ import RecipeCard from "./RecipeCard";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import "./Recipes.css";
 import { FallingLines } from "react-loader-spinner";
+import { UseAuth } from "../../Context/AuthContext";
 
 function Recipes() {
   const [loading, setLoading] = useState(false);
@@ -11,6 +12,7 @@ function Recipes() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [animationClass, setAnimationClass] = useState("slide-in");
+  const { savedUser } = UseAuth();
 
   const fetchRecipes = async () => {
     setLoading(true);
@@ -28,7 +30,7 @@ function Recipes() {
 
   useEffect(() => {
     fetchRecipes();
-  }, [search, page]);
+  }, [search, page, savedUser]);
 
   const handlePageChange = (newPage) => {
     setAnimationClass("slide-out");
@@ -40,7 +42,7 @@ function Recipes() {
 
   return (
     <>
-      <form className=" max-w-6xl mx-auto">
+      <form className="w-full">
         <label
           htmlFor="search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -71,21 +73,14 @@ function Recipes() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search recipes"
-            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none"
             required
           />
         </div>
       </form>
-      {/* 
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search recipes"
-          className="search-input bg-gray-500"
-        /> */}
+
       {loading ? (
-        <div className="flex justify-center items-center h-[28rem]">
+        <div className="flex justify-center items-center h-full">
           <FallingLines
             color="#EF4444"
             width="50"
@@ -94,13 +89,15 @@ function Recipes() {
           />
         </div>
       ) : (
-        <div className="max-w-6xl mx-auto my-10">
-          <div className={`grid grid-cols-4 gap-4 h-[28rem] ${animationClass}`}>
+        <div className=" my-10">
+          <div
+            className={`grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 h-72 my-4 ${animationClass}`}
+          >
             {recipes.map((recipe, index) => (
               <RecipeCard key={index} Recipe={recipe} />
             ))}
           </div>
-          <div className="flex justify-end items-center space-x-4">
+          <div className="flex justify-end items-center space-x-4 ">
             <button
               onClick={() => handlePageChange(page - 1)}
               disabled={page === 1}

@@ -40,7 +40,7 @@ const coinPacks = [
 
 const BuyCoins = () => {
   return (
-    <div className="overflow-hidden grid grid-cols-3 gap-4 max-w-4xl mx-auto">
+    <div className="overflow-hidden grid grid-cols-3 gap-4">
       {coinPacks.map((pack, index) => (
         <CoinCard pack={pack} key={index} />
       ))}

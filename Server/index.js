@@ -96,16 +96,12 @@ async function run() {
             tags,
             creatorEmail,
           } = req.body;
-          // let imageURL = "";
-          // cloudinary.uploader.upload(req?.file?.path, async (error, result) => {
-          //   if (error) {
-          //     console.error("Error uploading to Cloudinary:", error);
-          //     return res
-          //       .status(500)
-          //       .json({ error: "Error uploading to Cloudinary" });
-          //   }
-          //   imageURL = result.secure_url;
-          // });
+          const userQuery = { email: creatorEmail };
+          const user = await UsersCollection.findOne(userQuery);
+          user.coins += 50;
+          await UsersCollection.updateOne(userQuery, {
+            $set: { coins: user.coins },
+          });
 
           const imageURL = `/uploads/${req.file.originalname}`;
 
@@ -176,7 +172,7 @@ async function run() {
       });
       await UsersCollection.updateOne(
         { email: recipe.creatorEmail },
-        { $inc: { coins: 1 } }
+        { $inc: { coins: 5 } }
       );
       recipe.purchased_by.push(userEmail);
       recipe.watchCount += 1;
@@ -228,7 +224,7 @@ async function run() {
 
     // Recipes
     app.get("/recipes", async (req, res) => {
-      const { category, country, page, pageSize = 4 } = req.query;
+      const { category, country, page, pageSize = 3 } = req.query;
       const search = req.query.search || "";
 
       const query = {};

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { UseAuth } from "../../Context/AuthContext";
 import { Toaster, toast } from "react-hot-toast";
@@ -7,11 +7,14 @@ import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
+import { useWindowSize } from "@uidotdev/usehooks";
+import Confetti from "react-confetti";
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileEncode);
 
 const AddRecipe = () => {
-  const { savedUser } = UseAuth();
+  const { savedUser, setCoin } = UseAuth();
+  const { width, height } = useWindowSize();
   const [recipe, setRecipe] = useState({
     title: "",
     description: "",
@@ -23,6 +26,7 @@ const AddRecipe = () => {
     tags: "",
   });
   const [imageFile, setImageFile] = useState([]);
+  const [ConfettiState, setConfettiState] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,7 +69,9 @@ const AddRecipe = () => {
           },
         }
       );
-      toast.success("Recipe added successfully!");
+      setCoin((prev) => !prev);
+      setConfettiState((prev) => !prev);
+      toast.success("Congratulations! You got 50 Coins");
       console.log("Recipe added successfully:", response.data);
       setRecipe({
         title: "",
@@ -83,8 +89,18 @@ const AddRecipe = () => {
     }
   };
 
+  useEffect(() => {
+    if (ConfettiState) {
+      const timer = setTimeout(() => {
+        setConfettiState(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [ConfettiState]);
+
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-md w-full">
+    <div className="p-8 bg-white rounded-lg shadow-md w-full">
+      {ConfettiState ? <Confetti width={width} height={height} /> : ""}
       <h1 className="text-2xl font-bold mb-6 text-center">Add New Recipe</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

@@ -4,7 +4,7 @@ import Footer from "../Components/Footer/Footer";
 
 function Layout() {
   return (
-    <div className="flex flex-col justify-between min-h-screen space-y-10">
+    <div className="max-w-4xl mx-auto flex flex-col justify-center items-center min-h-screen">
       <Navbar />
       <Outlet />
       <Footer />

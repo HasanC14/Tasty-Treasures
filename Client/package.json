@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-google-maps/api": "^2.19.3",
+    "@uidotdev/usehooks": "^2.4.1",
     "axios": "^1.7.2",
     "filepond": "^4.31.1",
     "filepond-plugin-file-encode": "^2.1.14",
@@ -19,6 +20,7 @@
     "firebase": "^10.12.1",
     "framer-motion": "^11.3.2",
     "react": "^18.2.0",
+    "react-confetti": "^6.1.0",
     "react-datetime-picker": "^6.0.1",
     "react-dom": "^18.2.0",
     "react-filepond": "^7.1.2",

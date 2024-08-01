@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { UseAuth } from "../../Context/AuthContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaCoins } from "react-icons/fa6";
 
 function Navbar() {
+  const [CoinState, setCoinState] = useState(false);
   const {
     RegisterWithCoin,
     setLoading,
@@ -12,6 +13,7 @@ function Navbar() {
     LoginWithGoogle,
     savedUser,
     setCoin,
+    Coin,
   } = UseAuth();
 
   const HandleGoogleSignIn = async () => {
@@ -28,8 +30,15 @@ function Navbar() {
     setLoading(false);
     setCoin((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (!Coin) {
+      setCoinState(true);
+      setTimeout(() => setCoinState(false), 300);
+    }
+  }, [Coin]);
   return (
-    <div className="max-w-7xl mx-auto flex justify-between items-center w-full">
+    <div className="flex justify-between items-center w-full">
       <Link to={"/"}>
         <img
           src="/logo.png"
@@ -80,7 +89,11 @@ function Navbar() {
             />
             <div className="flex flex-col">
               {/* <div className="text-lg font-semibold">{savedUser?.name}</div> */}
-              <div className="flex items-center bg-red-100 rounded-md ps-2 py-1 font-bold w-16">
+              <div
+                className={`flex items-center bg-red-100 rounded-md ps-2 py-1 font-bold w-16 ${
+                  CoinState ? "scale-up" : ""
+                }`}
+              >
                 <FaCoins className="text-yellow-500 text-xl" />
                 <div className="">{savedUser?.coins}</div>
               </div>

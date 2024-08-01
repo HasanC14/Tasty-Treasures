@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
   // Function to logout
   const LogOut = () => {
     setLoading(true);
+    // setSavedUser(null)
     return signOut(auth);
   };
 
