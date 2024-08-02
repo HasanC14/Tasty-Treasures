@@ -7,6 +7,7 @@ import {
   FaListCheck,
   FaRegCirclePlay,
 } from "react-icons/fa6";
+import Carousel from "../Carousel/Carousel";
 
 function RecipeDetails() {
   const { id } = useParams();
@@ -59,12 +60,18 @@ function RecipeDetails() {
 
   return (
     <div className="space-y-4 text-lg">
-      <div className="w-full flex items-center ">
-        <img
-          src={`http://localhost:5000${recipe?.imageURL}`}
-          alt={recipe?.title}
-          className=" w-1/3 rounded-md"
-        />
+      {/* <div className="w-full flex items-center "> */}
+      <div className="max-w-lg">
+        <Carousel>
+          {recipe?.imageUrls?.map((image, index) => (
+            <img
+              key={index}
+              src={`http://localhost:5000${image}`}
+              alt={recipe?.title}
+              className="min-w-full max-h-80 rounded-md"
+            />
+          ))}
+        </Carousel>
       </div>
       <h1 className="text-4xl font-bold">{recipe?.title}</h1>
       <p>{recipe?.description}</p>

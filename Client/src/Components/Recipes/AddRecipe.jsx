@@ -21,9 +21,9 @@ const AddRecipe = () => {
     ingredients: "",
     steps: "",
     category: "",
-    country: "",
     videoURL: "",
-    tags: "",
+    country: "",
+    // tags: "",
   });
   const [imageFile, setImageFile] = useState([]);
   const [ConfettiState, setConfettiState] = useState(false);
@@ -51,13 +51,15 @@ const AddRecipe = () => {
     formData.append("ingredients", recipe?.ingredients);
     formData.append("steps", recipe?.steps);
     formData.append("category", recipe?.category);
-    formData.append("country", recipe?.country);
     formData.append("videoURL", recipe?.videoURL);
-    formData.append("tags", recipe?.tags);
+    formData.append("country", recipe?.country);
+    // formData.append("tags", recipe?.tags);
     formData.append("creatorEmail", savedUser?.email);
 
     if (imageFile.length > 0) {
-      formData.append("image", imageFile[0]?.file);
+      imageFile.forEach((fileItem) => {
+        formData.append("images", fileItem.file);
+      });
     }
     try {
       const response = await axios.post(
@@ -79,9 +81,9 @@ const AddRecipe = () => {
         ingredients: "",
         steps: "",
         category: "",
-        country: "",
         videoURL: "",
-        tags: "",
+        country: "",
+        // tags: "",
       });
       setImageFile([]);
     } catch (error) {
@@ -182,15 +184,15 @@ const AddRecipe = () => {
           <label className="block text-gray-700">Image:</label>
           <FilePond
             files={imageFile}
-            allowMultiple={false}
+            allowMultiple={true}
             onupdatefiles={setImageFile}
             allowFileEncode={true}
-            name="image"
+            name="images"
             maxFileSize="2MB"
             labelIdle='Drag & Drop your image or <span class="filepond--label-action">Browse</span>'
           />
         </div>
-        <div>
+        {/* <div>
           <label className="block text-gray-700">Tags (comma separated):</label>
           <input
             type="text"
@@ -199,7 +201,7 @@ const AddRecipe = () => {
             onChange={handleChange}
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
           />
-        </div>
+        </div> */}
         <button
           type="submit"
           className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-300"

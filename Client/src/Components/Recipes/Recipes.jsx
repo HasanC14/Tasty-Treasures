@@ -91,7 +91,7 @@ function Recipes() {
       ) : (
         <div className=" my-10">
           <div
-            className={`grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 h-72 my-4 ${animationClass}`}
+            className={`grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 h-80 my-4 ${animationClass}`}
           >
             {recipes.map((recipe, index) => (
               <RecipeCard key={index} Recipe={recipe} />

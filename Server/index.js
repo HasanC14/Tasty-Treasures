@@ -81,19 +81,18 @@ async function run() {
     });
 
     // Add Recipe
-    app.post("/addRecipe", upload.single("image"), async (req, res) => {
+    app.post("/addRecipe", upload.array("images", 10), async (req, res) => {
       try {
-        if (req.file) {
-          console.log("File uploaded successfully:", req.file);
+        if (req.files && req.files.length > 0) {
+          console.log("Files uploaded successfully:", req.files);
           const {
             title,
             description,
             ingredients,
             steps,
             category,
-            country,
             videoURL,
-            tags,
+            country,
             creatorEmail,
           } = req.body;
           const userQuery = { email: creatorEmail };
@@ -103,7 +102,9 @@ async function run() {
             $set: { coins: user.coins },
           });
 
-          const imageURL = `/uploads/${req.file.originalname}`;
+          const imageUrls = req.files.map(
+            (file) => `/uploads/${file.filename}`
+          );
 
           const formattedRecipe = {
             title,
@@ -113,8 +114,7 @@ async function run() {
             category,
             country,
             videoURL,
-            imageURL,
-            tags: tags.split(",").map((item) => item.trim()),
+            imageUrls,
             creatorEmail,
             watchCount: 0,
             purchased_by: [],
@@ -124,12 +124,12 @@ async function run() {
           const result = await RecipesCollection.insertOne(formattedRecipe);
           res.status(200).json(result);
         } else {
-          console.log("No file uploaded");
-          res.status(400).json({ error: "No file uploaded" });
+          console.log("No files uploaded");
+          res.status(400).json({ error: "No files uploaded" });
         }
       } catch (error) {
-        console.error("Error uploading file:", error);
-        res.status(500).json({ error: "Error uploading file" });
+        console.error("Error uploading files:", error);
+        res.status(500).json({ error: "Error uploading files" });
       }
     });
 

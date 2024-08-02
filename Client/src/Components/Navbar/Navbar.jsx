@@ -90,7 +90,7 @@ function Navbar() {
             <div className="flex flex-col">
               {/* <div className="text-lg font-semibold">{savedUser?.name}</div> */}
               <div
-                className={`flex items-center bg-red-100 rounded-md ps-2 py-1 font-bold w-16 ${
+                className={`flex items-center bg-red-100 rounded-md p-2 py-1 font-semibold w-auto ${
                   CoinState ? "scale-up" : ""
                 }`}
               >

@@ -10,8 +10,7 @@ function RecipeCard({ Recipe }) {
 
   const {
     title,
-    description,
-    imageURL,
+    imageUrls,
     reactions,
     category,
     _id,
@@ -33,14 +32,14 @@ function RecipeCard({ Recipe }) {
     <div className="p-2 rounded-lg bg-gray-100 relative w-72">
       <div>
         <img
-          src={`http://localhost:5000${imageURL}`}
+          src={`http://localhost:5000${imageUrls[0]}`}
           alt=""
-          className="rounded-md hover:rotate-3 cursor-pointer hover:scale-110 transition-all ease-in-out duration-700 h-32 w-full"
+          className="rounded-md hover:rotate-3 cursor-pointer hover:scale-110 transition-all ease-in-out duration-700 h-40 w-full"
         />
       </div>
       <div>
-        <div className="flex justify-between items-center text-lg font-semibold mt-2 px-1 text-start truncate">
-          <span> {title}</span>
+        <div className="flex justify-between items-center text-lg font-semibold mt-2 px-1 text-start ">
+          <span className="truncate"> {title}</span>
           <div className="flex  space-x-2 ml-1">
             <div className="flex items-center text-xs text-red-600">
               <FaHeart className="mr-1 text-md" />
