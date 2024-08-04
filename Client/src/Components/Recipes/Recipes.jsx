@@ -5,6 +5,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import "./Recipes.css";
 import { FallingLines } from "react-loader-spinner";
 import { UseAuth } from "../../Context/AuthContext";
+import Skeleton from "../Skeleton/Skeleton";
 
 function Recipes() {
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ function Recipes() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:5000/recipes?search=${search}&page=${page}`
+        `https://tasty-treasures-server.vercel.app/recipes?search=${search}&page=${page}`
       );
       setRecipes(res.data);
     } catch (error) {
@@ -80,13 +81,12 @@ function Recipes() {
       </form>
 
       {loading ? (
-        <div className="flex justify-center items-center h-full">
-          <FallingLines
-            color="#EF4444"
-            width="50"
-            visible={true}
-            ariaLabel="falling-circles-loading"
-          />
+        <div
+          className={`grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 h-80 my-4`}
+        >
+          {recipes.map((_, index) => (
+            <Skeleton key={index} />
+          ))}
         </div>
       ) : (
         <div className=" my-10">
@@ -94,7 +94,7 @@ function Recipes() {
             className={`grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 h-80 my-4 ${animationClass}`}
           >
             {recipes.map((recipe, index) => (
-              <RecipeCard key={index} Recipe={recipe} />
+              <RecipeCard key={index} Recipe={recipe} loading={loading} />
             ))}
           </div>
           <div className="flex justify-end items-center space-x-4 ">

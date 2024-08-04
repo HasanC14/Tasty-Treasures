@@ -29,9 +29,12 @@ function RecipeDetails() {
   const fetchRecipe = async (userEmail) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/recipe/${id}`, {
-        params: { userEmail },
-      });
+      const res = await axios.get(
+        `https://tasty-treasures-server.vercel.app/recipe/${id}`,
+        {
+          params: { userEmail },
+        }
+      );
 
       if (savedUser?.coins > 9) {
         setCoin((prev) => !prev);

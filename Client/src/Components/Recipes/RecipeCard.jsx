@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { FaCoins, FaEye, FaHeart } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { UseAuth } from "../../Context/AuthContext";
+import Skeleton from "../Skeleton/Skeleton";
 
-function RecipeCard({ Recipe }) {
+function RecipeCard({ Recipe, loading }) {
   const { savedUser } = UseAuth();
   console.log(savedUser);
   const [purchase, setPurchase] = useState(false);
@@ -28,7 +29,9 @@ function RecipeCard({ Recipe }) {
     }
   }, [savedUser, purchased_by]);
 
-  return (
+  return loading ? (
+    <Skeleton></Skeleton>
+  ) : (
     <div className="p-2 rounded-lg bg-gray-100 relative w-72">
       <div>
         <img

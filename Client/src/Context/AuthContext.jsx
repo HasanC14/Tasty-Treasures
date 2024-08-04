@@ -42,9 +42,11 @@ export const AuthProvider = ({ children }) => {
       profileImage: currentUser?.photoURL,
     };
     if (currentUser) {
-      axios.put("http://localhost:5000/registerUser", user).then((res) => {
-        setSavedUser(res.data);
-      });
+      axios
+        .put("https://tasty-treasures-server.vercel.app/registerUser", user)
+        .then((res) => {
+          setSavedUser(res.data);
+        });
     }
   };
 
@@ -53,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     if (currentUser) {
       try {
         const res = await axios.get(
-          `http://localhost:5000/user?email=${currentUser?.email}`
+          `https://tasty-treasures-server.vercel.app/user?email=${currentUser?.email}`
         );
         setSavedUser(res.data);
       } catch (error) {

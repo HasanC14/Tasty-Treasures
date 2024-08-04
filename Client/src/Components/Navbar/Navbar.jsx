@@ -38,12 +38,12 @@ function Navbar() {
     }
   }, [Coin]);
   return (
-    <div className="flex justify-between items-center w-full">
+    <div className="flex justify-between items-center w-full pb-4">
       <Link to={"/"}>
         <img
           src="/logo.png"
           alt=""
-          className="size-24 hover:scale-110 transition-all ease-in-out duration-700"
+          className="w-12 h-14 hover:scale-110 transition-all ease-in-out duration-700"
         />
       </Link>
       <div className="flex space-x-10 items-center">

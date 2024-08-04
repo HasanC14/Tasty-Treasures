@@ -14,16 +14,18 @@ function RecipeDetails() {
   const { savedUser, setCoin } = UseAuth();
   const [loading, setLoading] = useState(false);
   const [recipe, setRecipe] = useState(null);
-  const [purchase, setPurchase] = useState(false);
 
   const navigate = useNavigate();
 
   const fetchRecipe = async (userEmail) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/recipe/${id}`, {
-        params: { userEmail },
-      });
+      const res = await axios.get(
+        `https://tasty-treasures-server.vercel.app/recipe/${id}`,
+        {
+          params: { userEmail },
+        }
+      );
 
       if (savedUser?.coins > 9) {
         setCoin((prev) => !prev);
@@ -59,56 +61,73 @@ function RecipeDetails() {
   }
 
   return (
-    <div className="space-y-4 text-lg">
-      {/* <div className="w-full flex items-center "> */}
-      <div className="max-w-lg">
-        <Carousel>
-          {recipe?.imageUrls?.map((image, index) => (
-            <img
-              key={index}
-              src={`http://localhost:5000${image}`}
-              alt={recipe?.title}
-              className="min-w-full max-h-80 rounded-md"
-            />
-          ))}
-        </Carousel>
+    <div className="space-y-4">
+      <div>
+        <h1 className="text-4xl font-bold">{recipe?.title}</h1>
+        <p>
+          {recipe?.description} Lorem ipsum, dolor sit amet consectetur
+          adipisicing elit. Hic voluptatum ex vero fugit dolor soluta obcaecati
+          fuga! Laborum nisi itaque cum perspiciatis nihil nesciunt et,
+          molestias deleniti. Consequatur, molestias sunt.
+        </p>
       </div>
-      <h1 className="text-4xl font-bold">{recipe?.title}</h1>
-      <p>{recipe?.description}</p>
-      <h2 className="flex items-center text-xl">
-        <FaBasketShopping className="mr-2" />
-        Ingredients
-      </h2>
-      <ul className="list-disc ml-4">
-        {recipe?.ingredients?.map((ingredient, index) => (
-          <li key={index}>{ingredient}</li>
-        ))}
-      </ul>
-      <h2 className="flex items-center text-xl">
-        <FaListCheck className="mr-2" />
-        Steps
-      </h2>
-      <ol>
-        {recipe?.steps?.map((step, index) => (
-          <li key={index}>
-            {index + 1}. <span className="ml-2">{step}</span>
-          </li>
-        ))}
-      </ol>
-      <h2 className="flex items-center text-xl">
-        <FaRegCirclePlay className="mr-2" />
-        Video Tutorial
-      </h2>
-      <iframe
-        width="560"
-        height="315"
-        src={`https://www.youtube.com/embed/${
-          recipe?.videoURL.split("be/")[1]
-        }`}
-        title={recipe?.title}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      ></iframe>
+      <div className="flex md:flex-row flex-col-reverse gap-4 text-lg">
+        <div className="w-1/2 space-y-4">
+          <div className="space-y-2">
+            <h2 className="flex items-center text-xl font-semibold">
+              <FaBasketShopping className="mr-2" />
+              Ingredients
+            </h2>
+            <ul className="list-disc ml-4 grid grid-cols-3">
+              {recipe?.ingredients?.map((ingredient, index) => (
+                <li key={index}>{ingredient}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="space-y-2">
+            <h2 className="flex items-center text-xl font-semibold">
+              <FaListCheck className="mr-2" />
+              Steps
+            </h2>
+            <ol>
+              {recipe?.steps?.map((step, index) => (
+                <li key={index}>
+                  {index + 1}. <span className="ml-2">{step}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+        <div className="w-1/2">
+          <div className="max-w-lg space-y-8">
+            <Carousel>
+              {recipe?.imageUrls?.map((image, index) => (
+                <img
+                  key={index}
+                  src={`http://localhost:5000${image}`}
+                  alt={recipe?.title}
+                  className="min-w-full max-h-80 rounded-md"
+                />
+              ))}
+            </Carousel>
+            <div className="space-y-2">
+              <h2 className="flex items-center text-xl font-semibold">
+                <FaRegCirclePlay className="mr-2" />
+                Video Tutorial
+              </h2>
+              <iframe
+                className="w-full h-56"
+                src={`https://www.youtube.com/embed/${
+                  recipe?.videoURL.split("be/")[1]
+                }`}
+                title={recipe?.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
