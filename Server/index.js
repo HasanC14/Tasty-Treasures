@@ -31,9 +31,9 @@ const client = new MongoClient(uri, {
 });
 
 cloudinary.config({
-  cloud_name: "dkrjlmetf",
-  api_key: "195161584287565",
-  api_secret: "phP6fK5e9Q6RI5cx0p9ilB6PZg0",
+  cloud_name: "dil9yow5q",
+  api_key: "436545465192729",
+  api_secret: "mScRPzk-NDdKYdhUdUlXOd_g6KY",
 });
 
 async function run() {
