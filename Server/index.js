@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require("cors");
-// const cloudinary = require("cloudinary").v2;
+const cloudinary = require("cloudinary").v2;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const multer = require("multer");
 const path = require("path");
@@ -20,7 +20,8 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-const upload = multer({ storage });
+const upload = multer(); //cloud e korleo multer temporary vabe data gulake neoar jonno
+// const upload = multer({ storage });
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@back-prac-2-admin.sldkkq5.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
@@ -29,11 +30,11 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
-// cloudinary.config({
-//   cloud_name: "dil9yow5q",
-//   api_key: "436545465192729",
-//   api_secret: "mScRPzk-NDdKYdhUdUlXOd_g6KY",
-// });
+cloudinary.config({
+  cloud_name: "dkrjlmetf",
+  api_key: "195161584287565",
+  api_secret: "phP6fK5e9Q6RI5cx0p9ilB6PZg0",
+});
 
 async function run() {
   try {
@@ -102,8 +103,24 @@ async function run() {
             $set: { coins: user.coins },
           });
 
-          const imageUrls = req.files.map(
-            (file) => `/uploads/${file.filename}`
+          // const imageUrls = req.files.map(
+          //   (file) => `/uploads/${file.filename}`
+          // );
+
+          // Upload images to Cloudinary
+          const imageUploadPromises = req.files.map((file) =>
+            cloudinary.uploader
+              .upload_stream({ resource_type: "image" }, (error, result) => {
+                if (error) {
+                  throw new Error(error.message);
+                }
+                return result;
+              })
+              .end(file.buffer)
+          );
+          const imageUploadResults = await Promise.all(imageUploadPromises);
+          const imageUrls = imageUploadResults.map(
+            (result) => result.secure_url
           );
 
           const formattedRecipe = {
