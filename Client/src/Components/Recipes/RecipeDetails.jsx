@@ -104,7 +104,7 @@ function RecipeDetails() {
               {recipe?.imageUrls?.map((image, index) => (
                 <img
                   key={index}
-                  src={`http://localhost:5000${image}`}
+                  src={`https://tasty-treasures-server.vercel.app${image}`}
                   alt={recipe?.title}
                   className="min-w-full max-h-80 rounded-md"
                 />

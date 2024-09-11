@@ -82,7 +82,7 @@ function RecipeDetails() {
     //       {recipe?.imageUrls?.map((image, index) => (
     //         <SwiperSlide key={index}>
     //           {/* <img
-    //           src={`http://localhost:5000${image}`}
+    //           src={`https://tasty-treasures-server.vercel.app${image}`}
     //           alt={recipe?.title}
     //           className=" w-1/3 rounded-md"
     //         /> */}
@@ -137,7 +137,7 @@ function RecipeDetails() {
     //   {recipe?.imageUrls?.map((image, index) => (
     //     <SwiperSlide key={index}>
     //       <img
-    //         src={`http://localhost:5000${image}`}
+    //         src={`https://tasty-treasures-server.vercel.app${image}`}
     //         alt={recipe?.title}
     //         className=" w-1/3 rounded-md"
     //       />
@@ -168,7 +168,7 @@ function RecipeDetails() {
       {recipe?.imageUrls?.map((image, index) => (
         <SwiperSlide key={index}>
           <img
-            src={`http://localhost:5000${image}`}
+            src={`https://tasty-treasures-server.vercel.app${image}`}
             alt={recipe?.title}
             className=" w-1/3 rounded-md"
           />
