@@ -61,15 +61,10 @@ function RecipeDetails() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <div>
         <h1 className="text-4xl font-bold">{recipe?.title}</h1>
-        <p>
-          {recipe?.description} Lorem ipsum, dolor sit amet consectetur
-          adipisicing elit. Hic voluptatum ex vero fugit dolor soluta obcaecati
-          fuga! Laborum nisi itaque cum perspiciatis nihil nesciunt et,
-          molestias deleniti. Consequatur, molestias sunt.
-        </p>
+        <p className="mt-5">{recipe?.description}</p>
       </div>
       <div className="flex md:flex-row flex-col-reverse gap-4 text-lg">
         <div className="w-1/2 space-y-4">

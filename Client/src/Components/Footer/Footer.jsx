@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-
 import {
   FaFacebook,
   FaGithub,
@@ -9,6 +8,7 @@ import {
   FaEllipsis,
   FaEnvelopeOpen,
 } from "react-icons/fa6";
+import "/src/App.css";
 function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const textAreaVariants = {
@@ -29,13 +29,13 @@ function Footer() {
   return (
     <>
       <div className="text-xs mt-10 flex flex-col md:flex-row items-center">
-        <div className="text-prime text-lg md:mr-2 mr-0">
+        <div className=" text-lg md:mr-2 mr-0">
           <a
-            href="https://github.com/HasanC14/new-WriteRight-client"
+            href="https://github.com/HasanC14/Tasty-Treasures"
             className="md:text-2xl text-lg  hover:underline"
             target="_blank"
           >
-            WriteRight
+            Tasty Treasures
           </a>
         </div>
         <div>
@@ -56,13 +56,13 @@ function Footer() {
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
         >
           <div className=" bg-prime max-w-screen-lg mx-auto text-second rounded-xl ">
-            <div className="w-full h-12 bg-[#6a85c8] rounded-t-xl flex justify-between items-center">
+            <div className="w-full h-12 bg-[#ec7777] rounded-t-xl flex justify-between items-center">
               <div>
-                <FaEllipsis className="text-5xl ms-4" />
+                <FaEllipsis className="text-5xl ms-4 text-white" />
               </div>
               <div>
                 <FaCircleXmark
-                  className="text-3xl me-2 hover:text-white cursor-pointer"
+                  className="text-white text-3xl me-2 hover:text-gray-200 cursor-pointer"
                   onClick={toggleModal}
                 />
               </div>
@@ -75,7 +75,7 @@ function Footer() {
                   className="size-72 rounded-full "
                 />
               </div>
-              <div className="col-span-2 lg:mt-0 mt-5">
+              <div className="col-span-2 lg:mt-0 mt-5 text-white">
                 <p className="text-xl  md:px-10 p-3">
                   <span className="md:text-2xl text-lg ">
                     Hi there! I&#39;m{" "}
@@ -86,20 +86,20 @@ function Footer() {
                   </span>{" "}
                   <br />a{" "}
                   <span className="font-bold">Full Stack Web Developer</span>{" "}
-                  who loves to code. I created{" "}
+                  who loves to code. I developed{" "}
                   <a
-                    href="https://github.com/HasanC14/new-WriteRight-client"
+                    href="https://github.com/HasanC14/Tasty-Treasures"
                     className="md:text-2xl text-lg font-bold hover:underline"
                   >
-                    WriteRight
+                    Tasty Treasures
                   </a>{" "}
-                  , By leveraging the power of{" "}
-                  <span className="font-bold">Google</span>&#39;s latest
-                  language processing technology, to assist people in refining
-                  their writing skills. Good writing is an essential part of
-                  communication, and my goal is for WriteRight to make that
-                  process simpler. If you have any queries or comments, I would
-                  be delighted to hear from you!
+                  , a unique recipe-sharing platform where users can explore
+                  delicious recipes using a fun coin-based system. Users spend
+                  coins to unlock recipes and earn coins by uploading their own
+                  culinary creations. Built with the MERN stack, Tasty Treasures
+                  offers a seamless and engaging experience for food lovers. If
+                  you have any feedback or suggestions, I'd love to hear from
+                  you!
                   <div className="flex space-x-4 md:text-3xl text-2xl mt-5">
                     <a
                       href="dev.hasanchowdhury@gmail.com?subject=Hello%20There&body=I%20wanted%20to%20get%20in%20touch%20with%20you."
