@@ -19,7 +19,7 @@ function Recipes() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `https://tasty-treasures-server.onrender.com/recipes?search=${search}&page=${page}`
+        `https://tasty-treasures-server.vercel.app/recipes?search=${search}&page=${page}`
       );
       setRecipes(res.data);
     } catch (error) {

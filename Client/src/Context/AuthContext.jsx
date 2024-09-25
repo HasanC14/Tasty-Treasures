@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     };
     if (currentUser) {
       axios
-        .put("https://tasty-treasures-server.onrender.com/registerUser", user)
+        .put("https://tasty-treasures-server.vercel.app/registerUser", user)
         .then((res) => {
           setSavedUser(res.data);
         });
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     if (currentUser) {
       try {
         const res = await axios.get(
-          `https://tasty-treasures-server.onrender.com/user?email=${currentUser?.email}`
+          `https://tasty-treasures-server.vercel.app/user?email=${currentUser?.email}`
         );
         setSavedUser(res.data);
       } catch (error) {

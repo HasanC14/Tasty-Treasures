@@ -21,7 +21,7 @@ function RecipeDetails() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `https://tasty-treasures-server.onrender.com/recipe/${id}`,
+        `https://tasty-treasures-server.vercel.app/recipe/${id}`,
         {
           params: { userEmail },
         }
