@@ -35,7 +35,7 @@ function RecipeCard({ Recipe, loading }) {
     <div className="p-2 rounded-lg bg-gray-100 relative w-72">
       <div>
         <img
-          src={`https://tasty-treasures-server.onrender.com${imageUrls[0]}`}
+          src={`${imageUrls[0]}`}
           alt=""
           className="rounded-md hover:rotate-3 cursor-pointer hover:scale-110 transition-all ease-in-out duration-700 h-40 w-full"
         />

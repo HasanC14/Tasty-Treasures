@@ -99,7 +99,7 @@ function RecipeDetails() {
               {recipe?.imageUrls?.map((image, index) => (
                 <img
                   key={index}
-                  src={`https://tasty-treasures-server.onrender.com${image}`}
+                  src={`${image}`}
                   alt={recipe?.title}
                   className="min-w-full max-h-80 rounded-md"
                 />

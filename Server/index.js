@@ -21,16 +21,8 @@ cloudinary.config({
 // Configure multer for memory storage
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.use("/uploads", express.static("uploads"));
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "uploads"));
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
+// Remove this line as it's no longer needed
+// app.use("/uploads", express.static("uploads"));
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@back-prac-2-admin.sldkkq5.mongodb.net/?retryWrites=true&w=majority`;
 

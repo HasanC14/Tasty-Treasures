@@ -168,7 +168,7 @@ function RecipeDetails() {
       {recipe?.imageUrls?.map((image, index) => (
         <SwiperSlide key={index}>
           <img
-            src={`https://tasty-treasures-server.onrender.com${image}`}
+            src={`${image}`}
             alt={recipe?.title}
             className=" w-1/3 rounded-md"
           />
