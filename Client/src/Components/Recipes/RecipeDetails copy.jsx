@@ -30,7 +30,7 @@ function RecipeDetails() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `https://tasty-treasures-server.vercel.app/recipe/${id}`,
+        `https://tasty-treasures-server.onrender.com/recipe/${id}`,
         {
           params: { userEmail },
         }
@@ -82,7 +82,7 @@ function RecipeDetails() {
     //       {recipe?.imageUrls?.map((image, index) => (
     //         <SwiperSlide key={index}>
     //           {/* <img
-    //           src={`https://tasty-treasures-server.vercel.app${image}`}
+    //           src={`https://tasty-treasures-server.onrender.com${image}`}
     //           alt={recipe?.title}
     //           className=" w-1/3 rounded-md"
     //         /> */}
@@ -137,7 +137,7 @@ function RecipeDetails() {
     //   {recipe?.imageUrls?.map((image, index) => (
     //     <SwiperSlide key={index}>
     //       <img
-    //         src={`https://tasty-treasures-server.vercel.app${image}`}
+    //         src={`https://tasty-treasures-server.onrender.com${image}`}
     //         alt={recipe?.title}
     //         className=" w-1/3 rounded-md"
     //       />
@@ -168,7 +168,7 @@ function RecipeDetails() {
       {recipe?.imageUrls?.map((image, index) => (
         <SwiperSlide key={index}>
           <img
-            src={`https://tasty-treasures-server.vercel.app${image}`}
+            src={`https://tasty-treasures-server.onrender.com${image}`}
             alt={recipe?.title}
             className=" w-1/3 rounded-md"
           />

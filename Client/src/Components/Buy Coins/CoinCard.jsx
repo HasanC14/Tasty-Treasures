@@ -11,7 +11,7 @@ const CoinCard = ({ pack }) => {
     if (savedUser) {
       try {
         const response = await axios.post(
-          "https://tasty-treasures-server.vercel.app/purchaseCoins",
+          "https://tasty-treasures-server.onrender.com/purchaseCoins",
           {
             email: savedUser.email,
             amount: price,

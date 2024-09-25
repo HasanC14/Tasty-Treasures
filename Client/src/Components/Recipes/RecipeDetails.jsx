@@ -21,7 +21,7 @@ function RecipeDetails() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `https://tasty-treasures-server.vercel.app/recipe/${id}`,
+        `https://tasty-treasures-server.onrender.com/recipe/${id}`,
         {
           params: { userEmail },
         }
@@ -99,7 +99,7 @@ function RecipeDetails() {
               {recipe?.imageUrls?.map((image, index) => (
                 <img
                   key={index}
-                  src={`https://tasty-treasures-server.vercel.app${image}`}
+                  src={`https://tasty-treasures-server.onrender.com${image}`}
                   alt={recipe?.title}
                   className="min-w-full max-h-80 rounded-md"
                 />

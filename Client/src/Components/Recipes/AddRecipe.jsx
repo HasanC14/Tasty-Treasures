@@ -63,7 +63,7 @@ const AddRecipe = () => {
     }
     try {
       const response = await axios.post(
-        "https://tasty-treasures-server.vercel.app/addRecipe",
+        "https://tasty-treasures-server.onrender.com/addRecipe",
         formData,
         {
           headers: {
