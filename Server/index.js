@@ -4,30 +4,33 @@ const port = process.env.PORT || 5000;
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
 const path = require("path");
-const fs = require("fs");
 require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
 
-// Ensure the uploads directory exists
-const uploadsDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Configure multer for memory storage
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.use("/uploads", express.static("uploads"));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, uploadsDir);
+    cb(null, path.join(__dirname, "uploads"));
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
-
-const upload = multer({ storage: storage });
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@back-prac-2-admin.sldkkq5.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -86,7 +89,7 @@ async function run() {
     app.post("/addRecipe", upload.array("images", 10), async (req, res) => {
       try {
         if (req.files && req.files.length > 0) {
-          console.log("Files uploaded successfully:", req.files);
+          console.log("Files uploaded successfully:", req.files.length);
           const {
             title,
             description,
@@ -104,9 +107,21 @@ async function run() {
             $set: { coins: user.coins },
           });
 
-          const imageUrls = req.files.map(
-            (file) => `/uploads/${file.filename}`
-          );
+          // Upload images to Cloudinary
+          const uploadPromises = req.files.map((file) => {
+            return new Promise((resolve, reject) => {
+              const stream = cloudinary.uploader.upload_stream(
+                { folder: "recipes" },
+                (error, result) => {
+                  if (error) reject(error);
+                  else resolve(result.secure_url);
+                }
+              );
+              stream.end(file.buffer);
+            });
+          });
+
+          const imageUrls = await Promise.all(uploadPromises);
 
           const formattedRecipe = {
             title,
